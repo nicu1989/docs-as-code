@@ -2,5 +2,9 @@
   {
     "version": "main",
     "url": "https://eclipse-score.github.io/docs-as-code/main/"
+  },
+  {
+    "version": "pr-57",
+    "url": "https://eclipse-score.github.io/docs-as-code/pr-57/"
   }
 ]

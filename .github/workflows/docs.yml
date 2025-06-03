@@ -38,5 +38,5 @@ jobs:
       id-token: write
 
     with:
-      bazel-target: "//docs:github_pages__release --define github_user=nicu1989 --define github_repo=docs-as-code" #build for eclipse-score  org
+      bazel-target: "//docs:github_pages__release --define github_user=nicu1989 --define github_repo=docs-as-code"
       retention-days: 3

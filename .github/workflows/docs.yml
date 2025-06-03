@@ -30,7 +30,7 @@ on:
 
 jobs:
   build-docs:
-    uses: eclipse-score/cicd-workflows/.github/workflows/docs.yml@main
+    uses: nicu1989/cicd-workflows/.github/workflows/docs.yml@main
     permissions:
       contents: write
       pages: write

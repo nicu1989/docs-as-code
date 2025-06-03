@@ -58,6 +58,37 @@ sphinx_requirements = all_requirements + [
     "@score_docs_as_code//src/extensions/score_source_code_linker:score_source_code_linker",
 ]
 
+def _set_github_settings(ctx):
+    """Sets GitHub settings for documentation.
+
+    This function creates a text file containing GitHub user and repo information,
+    either from Bazel command line variables or default values. The file is used
+    by Sphinx extensions to configure documentation settings.
+    Usage example:
+        bazel build //docs:github_pages__release --define github_user=eclipse-score --define github_repo=score
+
+    Args:
+        ctx: bazel rule context.
+
+    Returns:
+        A list containing DefaultInfo with runfiles for the settings file.
+    """
+
+    github_user = ctx.var.get("github_user") or "eclipse-score"
+    github_repo = ctx.var.get("github_repo") or "score"
+
+    txt = ctx.actions.declare_file("github_settings.txt")
+    ctx.actions.write(output = txt, content = github_user + "," + github_repo)
+
+    return [
+        DefaultInfo(runfiles = ctx.runfiles(files = [txt])),
+    ]
+
+github_settings = rule(
+    implementation = _set_github_settings,
+    attrs = {},
+)
+
 def docs(source_files_to_scan_for_needs_links = None, source_dir = "docs", conf_dir = "docs", build_dir_for_incremental = "_build", docs_targets = []):
     """
     Creates all targets related to documentation.
@@ -73,6 +104,10 @@ def docs(source_files_to_scan_for_needs_links = None, source_dir = "docs", conf_
         srcs_and_deps = source_files_to_scan_for_needs_links if source_files_to_scan_for_needs_links else [],
     )
 
+    github_settings(
+        name = "github_settings",
+    )
+
     # We are iterating over all provided 'targets' in order to allow for automatic generation of them without
     # needing to modify the underlying 'docs.bzl' file.
     for target in docs_targets:
@@ -83,7 +118,7 @@ def docs(source_files_to_scan_for_needs_links = None, source_dir = "docs", conf_
         sphinx_build_binary(
             name = "sphinx_build" + suffix,
             visibility = ["//visibility:public"],
-            data = ["@score_docs_as_code//src:docs_assets", "@score_docs_as_code//src:score_extension_files"] + external_needs_deps,
+            data = ["@score_docs_as_code//src:docs_assets", "@score_docs_as_code//src:score_extension_files"] + external_needs_deps + [":github_settings"],
             deps = sphinx_requirements,
         )
         _incremental(

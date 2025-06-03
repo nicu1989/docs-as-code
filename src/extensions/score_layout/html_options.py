@@ -11,6 +11,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************
 from sphinx.application import Sphinx
+from pathlib import Path
+import os
 
 
 def return_html_theme_options(app: Sphinx) -> dict[str, object]:
@@ -54,10 +56,34 @@ html_css_files = [
 # html_logo = "_assets/S-CORE_Logo_white.svg"
 
 
+def set_github_context(root_path: Path) -> tuple[str, str]:
+    """
+    Set the GitHub user and repository from settings file or use defaults.
+
+    Args:
+        root_path: Path to the root directory containing github settings
+
+    Returns:
+        tuple containing (github_user, github_repo)
+    """
+    try:
+        github_settings = (
+            (root_path / Path("_main/docs/github_settings.txt")).read_text().strip()
+        )
+        github_user, github_repo = github_settings.split(",")
+    except (FileNotFoundError, ValueError):
+        github_user = "eclipse-score"
+        github_repo = "score"
+    return github_user, github_repo
+
+
+root = Path(os.environ["RUNFILES_DIR"])
+github_user, github_repo = set_github_context(root)
+
 html_context = {
     # "github_url": "https://github.com", # or your GitHub Enterprise site
-    "github_user": "eclipse-score",
-    "github_repo": "score",
+    "github_user": github_user,
+    "github_repo": github_repo,
     "github_version": "main",
     "doc_path": "docs",
 }

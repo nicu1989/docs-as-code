@@ -38,5 +38,5 @@ jobs:
       id-token: write
 
     with:
-      bazel-target: "//docs:incremental_release -- --github_user=nicu1989 --github_repo=docs-as-code"
+      bazel-target: "//docs:incremental_release -- --github_user=nicu1989 --github_repo=docs-as-code" #trigger
       retention-days: 3

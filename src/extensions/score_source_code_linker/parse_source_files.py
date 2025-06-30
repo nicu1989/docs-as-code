@@ -75,17 +75,29 @@ def get_github_repo_info(git_root_cwd: Path) -> str:
 
 def find_git_root():
     """
-    This is copied from 'find_runfiles' as the import does not work for some reason.
-    This should be fixed.
+    Finds the root of the git repository.
+    It first checks the 'BUILD_WORKSPACE_DIRECTORY' environment variable,
+    which is set by Bazel. If not available, it traverses up from the
+    current script's location or the current working directory.
     """
+    workspace_dir = os.environ.get("BUILD_WORKSPACE_DIRECTORY")
+    if workspace_dir:
+        git_root = Path(workspace_dir)
+        if (git_root / ".git").exists():
+            return git_root.resolve()
+
     git_root = Path(__file__).resolve()
     while not (git_root / ".git").exists():
         git_root = git_root.parent
         if git_root == Path("/"):
-            sys.exit(
-                "Could not find git root. Please run this script from the "
-                "root of the repository."
-            )
+            git_root = Path.cwd().resolve()
+            while not (git_root / ".git").exists():
+                git_root = git_root.parent
+                if git_root == Path("/"):
+                    sys.exit(
+                        "Could not find git root. Please run this script from the "
+                        "root of the repository."
+                    )
     return git_root
 
 
@@ -102,18 +114,19 @@ def get_git_hash(file_path: str) -> str:
         Example:
                 3b3397ebc2777f47b1ae5258afc4d738095adb83
     """
-    abs_path = None
+    git_root = find_git_root()
+    abs_path = git_root / file_path
     try:
-        abs_path = Path(file_path).resolve()
         if not os.path.isfile(abs_path):
             logger.warning(f"File not found: {abs_path}")
             return "file_not_found"
         result = subprocess.run(
-            ["git", "log", "-n", "1", "--pretty=format:%H", "--", abs_path],
-            cwd=Path(abs_path).parent,
+            ["git", "log", "-n", "1", "--pretty=format:%H", "--", file_path],
+            cwd=git_root,
             capture_output=True,
+            text=True,
         )
-        decoded_result = result.stdout.strip().decode()
+        decoded_result = result.stdout.strip()
 
         # sanity check
         assert all(c in "0123456789abcdef" for c in decoded_result)

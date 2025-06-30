@@ -78,7 +78,13 @@ def find_git_root():
     This is copied from 'find_runfiles' as the import does not work for some reason.
     This should be fixed.
     """
-    git_root = Path(__file__).resolve()
+    if r := os.getenv("RUNFILES_DIR"):
+        # Runfiles are only available when running in Bazel.
+        git_root = Path(__file__).resolve()
+    else:
+        # The only way to land here is when running from within the virtual
+        # environment created by the `docs:ide_support` rule in the BUILD file.
+        git_root = Path.cwd().resolve()
     while not (git_root / ".git").exists():
         git_root = git_root.parent
         if git_root == Path("/"):

@@ -78,6 +78,7 @@ def find_git_root():
     This is copied from 'find_runfiles' as the import does not work for some reason.
     This should be fixed.
     """
+    print("git_root_parse_source_files_1:")
     if r := os.getenv("RUNFILES_DIR"):
         # Runfiles are only available when running in Bazel.
         # bazel build and bazel run are both supported.
@@ -88,12 +89,16 @@ def find_git_root():
         # When using runfiles, look for git root in the runfiles directory
         # The runfiles directory structure typically contains the workspace
         git_root = runfiles_dir / "_main"  # _main is the default workspace name
+        print("git_root_parse_source_files_6:")
+        print(git_root)
         if not (git_root / ".git").exists():
             # Fallback: search in runfiles_dir itself
             git_root = runfiles_dir
             if not (git_root / ".git").exists():
                 # Last resort: traverse up from runfiles_dir
                 while not (git_root / ".git").exists():
+                    print("git_root_parse_source_files_5:")
+                    print(git_root)
                     git_root = git_root.parent
                     if git_root == Path("/"):
                         sys.exit(

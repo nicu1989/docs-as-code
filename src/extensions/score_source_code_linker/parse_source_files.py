@@ -78,28 +78,43 @@ def find_git_root():
     This is copied from 'find_runfiles' as the import does not work for some reason.
     This should be fixed.
     """
-    git_root = Path(__file__).resolve()
-    print("git_root_parse_source_files:")
-    print(git_root)
+    if r := os.getenv("RUNFILES_DIR"):
+        # Runfiles are only available when running in Bazel.
+        # bazel build and bazel run are both supported.
+        # i.e. `bazel build //docs:docs` and `bazel run //docs:incremental`.
+        logger.debug("Using runfiles to determine plantuml path.")
 
+        runfiles_dir = Path(r)
+        # When using runfiles, look for git root in the runfiles directory
+        # The runfiles directory structure typically contains the workspace
+        git_root = runfiles_dir / "_main"  # _main is the default workspace name
+        if not (git_root / ".git").exists():
+            # Fallback: search in runfiles_dir itself
+            git_root = runfiles_dir
+            if not (git_root / ".git").exists():
+                # Last resort: traverse up from runfiles_dir
+                while not (git_root / ".git").exists():
+                    git_root = git_root.parent
+                    if git_root == Path("/"):
+                        sys.exit(
+                            "Could not find git root in runfiles. Please check your Bazel setup."
+                        )
 
-    while not (git_root / ".git").exists():
-        git_root = git_root.parent
-        if git_root == Path("/"):
-            # if git_root is not found, we try to find it in the current working directory
-            git_root = Path.cwd().resolve()
-            print("git_root_parse_source_files_2:")
-            print(git_root)
-            while not (git_root / ".git").exists():
-                git_root = git_root.parent
-                if git_root == Path("/"):
-                    git_root = Path.cwd().resolve()
-                    print("git_root_parse_source_files_3:")
-                    print(git_root)
-                    sys.exit(
-                        "Could not find git root. Please run this script from the "
-                        "root of the repository."
-                    )
+    else:
+
+        git_root = Path.cwd().resolve()
+        print("git_root_parse_source_files_2:")
+        print(git_root)
+        while not (git_root / ".git").exists():
+            git_root = git_root.parent
+            if git_root == Path("/"):
+                git_root = Path.cwd().resolve()
+                print("git_root_parse_source_files_3:")
+                print(git_root)
+                sys.exit(
+                    "Could not find git root. Please run this script from the "
+                    "root of the repository."
+                )
     print("git_root_parse_source_files_4:")
     print(git_root)
     return git_root

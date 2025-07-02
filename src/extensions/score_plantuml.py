@@ -53,7 +53,16 @@ def get_runfiles_dir() -> Path:
         # But we need to find it first.
         logger.debug("Running outside bazel.")
 
+        git_root_cwd = Path.cwd().resolve()
+        git_root_parent = Path(__file__).resolve().parent.parent.parent
         git_root = Path(__file__).resolve()
+        print("git_root__file__:")
+        print(git_root)
+        print("git_root_cwd:")
+        print(git_root_cwd)
+        print("git_root_parent:")
+        print(git_root_parent)
+
         while not (git_root / ".git").exists():
             git_root = git_root.parent
             if git_root == Path("/"):

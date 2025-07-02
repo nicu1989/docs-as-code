@@ -72,24 +72,34 @@ def get_github_repo_info(git_root_cwd: Path) -> str:
     )
     return repo
 
-
+_BAZEL_MARKERS = {"WORKSPACE", "WORKSPACE.bazel", "MODULE.bazel"}
 def find_git_root(max_levels: int = 25) -> Path:
-    if (ws := os.getenv("BUILD_WORKSPACE_DIRECTORY")):
-        logger.debug("Using BUILD_WORKSPACE_DIRECTORY=%s", ws)
-        return Path(ws).resolve()
+    """
+    Return the repository / workspace root in every execution context:
+      • bazel **run**          → $BUILD_WORKSPACE_DIRECTORY
+      • bazel **build / test** → first dir containing WORKSPACE*
+      • outside Bazel          → first dir containing .git
+    """
 
-    git_root = Path.cwd().resolve()
+    # ── 1. Bazel `run` (or manual override) ───────────────────────────
+    if (root := os.getenv("BUILD_WORKSPACE_DIRECTORY") or
+                os.getenv("REPO_ROOT")):               # opt-in override
+        return Path(root).resolve()
+
+    # ── 2. Walk up from CWD for Bazel markers or .git ────────────────
+    here = Path.cwd().resolve()
     for _ in range(max_levels):
-        if (git_root / ".git").exists():
-            logger.debug("Found .git at %s", git_root)
-            return git_root
-        if git_root.parent == git_root:  # reached filesystem root
+        entries = {p.name for p in here.iterdir()}
+        if entries & _BAZEL_MARKERS or ".git" in entries:
+            return here
+        if here.parent == here:  # reached filesystem root
             break
-        git_root = git_root.parent
+        here = here.parent
 
+    # ── 3. No luck ───────────────────────────────────────────────────
     raise RuntimeError(
-        f"Could not determine git root: not running under Bazel and no "
-        f".git directory found ≤ {max_levels} levels above {Path.cwd()}"
+        f"Could not determine repository root (looked ≤{max_levels} levels "
+        f"above {Path.cwd()}).  Set BUILD_WORKSPACE_DIRECTORY or REPO_ROOT."
     )
 
 

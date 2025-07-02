@@ -79,6 +79,11 @@ def find_git_root():
     This should be fixed.
     """
     git_root = Path(__file__).resolve()
+    print("git_root_parse_source_files:")
+    print(git_root)
+    git_root = Path.cwd().resolve()
+    print("git_root_parse_source_files_2:")
+    print(git_root)
     while not (git_root / ".git").exists():
         git_root = git_root.parent
         if git_root == Path("/"):

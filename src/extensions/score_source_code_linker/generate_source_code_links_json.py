@@ -34,8 +34,12 @@ def find_ws_root() -> Path | None:
     return Path(ws_dir) if ws_dir else None
 
 
-def find_git_root(file:str=__file__):
-    git_root = Path(__file__).resolve()
+def find_git_root(start_path: str | Path = "") -> Path | None:
+    """Find the git root directory starting from the given path or __file__."""
+    if start_path == "":
+        start_path = __file__
+
+    git_root = Path(start_path).resolve()
     while not (git_root / ".git").exists():
         git_root = git_root.parent
         if git_root == Path("/"):

@@ -25,6 +25,7 @@ from typing import cast
 
 from sphinx.application import Sphinx
 from sphinx.environment import BuildEnvironment
+from sphinx.config import Config
 from sphinx_needs.data import NeedsInfoType, NeedsMutable, SphinxNeedsData
 from sphinx_needs.logging import get_logger
 
@@ -36,6 +37,7 @@ from src.extensions.score_source_code_linker.generate_source_code_links_json imp
 from src.extensions.score_source_code_linker.needlinks import (
     NeedLink,
     load_source_code_links_json,
+    DefaultNeedLink
 )
 
 LOGGER = get_logger(__name__)
@@ -50,7 +52,10 @@ def get_cache_filename(build_dir: Path) -> Path:
     return build_dir / "score_source_code_linker_cache.json"
 
 
-def setup_once(app: Sphinx):
+def setup_once(app: Sphinx, config: Config):
+    # might be the only way to solve this?
+    if "skip_rescanning_via_source_code_linker" in app.config:
+        return
     print(f"DEBUG: Workspace root is {find_ws_root()}")
     print(f"DEBUG: Current working directory is {Path('.')} = {Path('.').resolve()}")
     print(f"DEBUG: Git root is {find_git_root()}")
@@ -62,7 +67,7 @@ def setup_once(app: Sphinx):
         return
 
     # When BUILD_WORKSPACE_DIRECTORY is set, we are inside a git repository.
-    assert find_git_root()
+    assert find_git_root(ws_root)
 
     # Extension: score_source_code_linker
     app.add_config_value(
@@ -99,8 +104,7 @@ def setup_once(app: Sphinx):
 def setup(app: Sphinx) -> dict[str, str | bool]:
     # Esbonio will execute setup() on every iteration.
     # setup_once will only be called once.
-    if "skip_rescanning_via_source_code_linker" not in app.config:
-        setup_once(app)
+    app.connect("config-inited", setup_once)
 
     return {
         "version": "0.1",
@@ -136,12 +140,6 @@ def group_by_need(source_code_links: list[NeedLink]) -> dict[str, list[NeedLink]
     for needlink in source_code_links:
         source_code_links_by_need[needlink.need].append(needlink)
     return source_code_links_by_need
-
-
-def get_github_base_url() -> str:
-    git_root = find_git_root()
-    repo = get_github_repo_info(git_root)
-    return f"https://github.com/{repo}"
 
 
 def parse_git_output(str_line: str) -> str:
@@ -180,10 +178,28 @@ def get_github_repo_info(git_root_cwd: Path) -> str:
     return repo
 
 
-def get_github_link(ws_root: Path, n: NeedLink):
-    hash = get_current_git_hash(ws_root)
-    github_base_url = get_github_base_url() + "/blob/" 
-    return f"{github_base_url}/{hash}/{n.file}#L{n.line}"
+def get_git_root(git_root: Path=Path() )-> Path:
+    # This is kinda ugly, doing this to reduce type errors.
+    # There might be a nicer way to do this
+    if git_root == Path():
+        passed_git_root = find_git_root()
+        if passed_git_root is None:
+            return Path()
+    else:
+        passed_git_root = git_root
+    return passed_git_root
+
+
+def get_github_base_url(git_root: Path = Path() ) -> str:
+    passed_git_root = get_git_root(git_root)
+    repo_info = get_github_repo_info(passed_git_root)
+    return f"https://github.com/{repo_info}"
+
+def get_github_link(git_root: Path = Path(), needlink: NeedLink = DefaultNeedLink()) -> str:
+    passed_git_root = get_git_root(git_root)
+    base_url = get_github_base_url(passed_git_root)  # Pass git_root to avoid double lookup
+    current_hash = get_current_git_hash(passed_git_root)
+    return f"{base_url}/blob/{current_hash}/{needlink.file}#L{needlink.line}"
 
 
 def get_current_git_hash(ws_root: Path) -> str:
@@ -196,9 +212,6 @@ def get_current_git_hash(ws_root: Path) -> str:
         )
         decoded_result = result.stdout.strip().decode()
 
-        # sanity check
-        print("===== DECODED RESULT====")
-        print(decoded_result, ws_root)
         assert all(c in "0123456789abcdef" for c in decoded_result)
         return decoded_result
     except Exception as e:

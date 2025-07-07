@@ -25,20 +25,21 @@ from pytest import TempPathFactory
 from sphinx.testing.util import SphinxTestApp
 from sphinx_needs.data import SphinxNeedsData
 
+from test_requirement_links import needlink_test_decoder
 from src.extensions.score_source_code_linker import get_github_base_url, get_github_link
-from src.extensions.score_source_code_linker.needlinks import NeedLink, needlink_decoder
+from src.extensions.score_source_code_linker.needlinks import NeedLink
 from src.extensions.score_source_code_linker.generate_source_code_links_json import (
     find_ws_root,
 )
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def sphinx_base_dir(tmp_path_factory: TempPathFactory) -> Path:
     repo_path = tmp_path_factory.mktemp("test_git_repo")
     return repo_path
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def git_repo_setup(sphinx_base_dir) -> Path:
     """Creating git repo, to make testing possible"""
 
@@ -60,7 +61,7 @@ def git_repo_setup(sphinx_base_dir) -> Path:
     return repo_path
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def create_demo_files(sphinx_base_dir, git_repo_setup):
     repo_path = sphinx_base_dir
 
@@ -78,12 +79,9 @@ def create_demo_files(sphinx_base_dir, git_repo_setup):
     docs_dir.mkdir()
     (docs_dir / "index.rst").write_text(basic_needs())
     (docs_dir / "conf.py").write_text(basic_conf())
-    curr_dir = Path(__file__).parent
+    curr_dir = Path(__file__).absolute().parent
+    #print("CURR_dir", curr_dir)
     shutil.copyfile(curr_dir / "scl_golden_file.json", repo_path / ".golden_file.json")
-    # with open("scl_golden_file.json", "w") as gf:
-    #     print(gf.readlines())
-    #     gold_file = json.load(gf)
-    # (repo_path/".golde_file.json").write_text(json.dumps(gold_file))
 
     # Add files to git and commit
     subprocess.run(["git", "add", "."], cwd=repo_path, check=True)
@@ -128,7 +126,7 @@ def make_bad_source():
     return """
 # req-Id: TREQ_ID_200
 def This_Should_Error(self):
-    pass 
+    pass
 
 """
 
@@ -138,18 +136,41 @@ def construct_gh_url() -> str:
     return f"{gh}/blob/"
 
 
-@pytest.fixture(scope="session")
-def sphinx_app_setup(sphinx_base_dir, create_demo_files) -> Callable[[], SphinxTestApp]:
-    def _create_app(sphinx_base_dir):
+@pytest.fixture()
+def sphinx_app_setup(sphinx_base_dir, create_demo_files, git_repo_setup) -> Callable[[], SphinxTestApp]:
+    def _create_app():
         base_dir = sphinx_base_dir
-        return SphinxTestApp(
-            freshenv=True,
-            srcdir=Path(str(base_dir) + "/docs"),
-            confdir=Path(str(base_dir) + "/docs"),
-            outdir=sphinx_base_dir / "out",
-            buildername="html",
-            warningiserror=True,
-        )
+        docs_dir = base_dir / "docs"
+        
+        # CRITICAL: Change to a directory that exists and is accessible
+        # This fixes the "no such file or directory" error in Bazel
+        original_cwd = None
+        try:
+            original_cwd = os.getcwd()
+        except FileNotFoundError:
+            # Current working directory doesn't exist, which is the problem
+            pass
+        
+        # Change to the base_dir before creating SphinxTestApp
+        os.chdir(base_dir)
+        try:
+            return SphinxTestApp(
+                freshenv=True,
+                srcdir=docs_dir,
+                confdir=docs_dir,
+                outdir=sphinx_base_dir / "out",
+                buildername="html",
+                warningiserror=True,
+            )        
+        finally:
+            # Try to restore original directory, but don't fail if it doesn't exist
+            if original_cwd is not None:
+                try:
+                    os.chdir(original_cwd)
+                except (FileNotFoundError, OSError):
+                    # Original directory might not exist anymore in Bazel sandbox
+                    pass
+    
 
     return _create_app
 
@@ -188,7 +209,7 @@ TESTING SOURCE LINK
 """
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def example_source_link_text_all_ok(sphinx_base_dir):
     repo_path = sphinx_base_dir
     return {
@@ -220,7 +241,7 @@ def example_source_link_text_all_ok(sphinx_base_dir):
     }
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def example_source_link_text_non_existent(sphinx_base_dir):
     repo_path = sphinx_base_dir
     return [
@@ -246,9 +267,9 @@ def make_source_link(ws_root: Path, needlinks):
 
 def compare_json_files(file1: Path, golden_file: Path):
     with open(file1, "r") as f1:
-        json1 = json.load(f1, object_hook=needlink_decoder)
+        json1 = json.load(f1, object_hook=needlink_test_decoder)
     with open(golden_file, "r") as f2:
-        json2 = json.load(f2, object_hook=needlink_decoder)
+        json2 = json.load(f2, object_hook=needlink_test_decoder)
     assert len(json1) == len(json2), (
         f"{file1}'s lenth are not the same as in the golden file lenght. Len of{file1}: {len(json1)}. Len of Golden File: {len(json2)}"
     )
@@ -260,11 +281,13 @@ def compare_json_files(file1: Path, golden_file: Path):
 
 
 def test_source_link_integration_ok(
-    sphinx_app_setup: Callable[[str], SphinxTestApp],
+    sphinx_app_setup: Callable[[], SphinxTestApp],
     example_source_link_text_all_ok: dict[str, list[str]],
     sphinx_base_dir,
+    git_repo_setup,
+    create_demo_files,
 ):
-    app = sphinx_app_setup(sphinx_base_dir)
+    app = sphinx_app_setup()
     try:
         os.environ["BUILD_WORKSPACE_DIRECTORY"] = str(sphinx_base_dir)
         app.build()
@@ -292,11 +315,13 @@ def test_source_link_integration_ok(
 
 
 def test_source_link_integration_non_existent_id(
-    sphinx_app_setup: Callable[[str], SphinxTestApp],
+    sphinx_app_setup: Callable[[], SphinxTestApp],
     example_source_link_text_non_existent: dict[str, list[str]],
     sphinx_base_dir,
+    git_repo_setup,
+    create_demo_files,
 ):
-    app = sphinx_app_setup(sphinx_base_dir)
+    app = sphinx_app_setup()
     try:
         app.build()
         warnings = app.warning.getvalue()

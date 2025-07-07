@@ -14,36 +14,35 @@ class NeedLink:
     need: str
     full_line: str
 
-
-# Ensuring our found json does not get parsed in future iterations
-def encode_comment(s: str) -> str:
-    return s.replace(" ", "-----", 1)
-
-
-def decode_comment(s: str) -> str:
-    return s.replace("-----", " ", 1)
-
+def DefaultNeedLink()-> NeedLink:
+    """
+    Return a default NeedLinks to be used as 'default args' or so
+    Like this better than adding defaults to the dataclass, as it is deliberate
+    """
+    return NeedLink(
+        file=Path("."),
+        line=0,
+        tag="",
+        need="",
+        full_line="",
+    )
 
 class NeedLinkEncoder(json.JSONEncoder):
     def default(self, o: object):
         if isinstance(o, NeedLink):
-            d = asdict(o)
-            d["tag"] = encode_comment(d.get("tag", ""))
-            d["full_line"] = encode_comment(d.get("full_line", ""))
-            return d
+            return asdict(o)
         if isinstance(o, Path):
             return str(o)
         return super().default(o)
-
 
 def needlink_decoder(d: dict[str, Any]) -> NeedLink | dict[str, Any]:
     if {"file", "line", "tag", "need", "full_line"} <= d.keys():
         return NeedLink(
             file=Path(d["file"]),
             line=d["line"],
-            tag=decode_comment(d["tag"]),
+            tag=d["tag"],
             need=d["need"],
-            full_line=decode_comment(d["full_line"]),
+            full_line=d["full_line"],
         )
     else:
         # It's something else, pass it on to other decoders

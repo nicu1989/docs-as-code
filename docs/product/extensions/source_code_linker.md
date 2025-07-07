@@ -41,12 +41,22 @@ The extension uses two main components to integrate with Bazel:
 
 Produces JSON mapping file:
 ```json
-{
-    "REQ_ID": [
-        "github_link1",
-        "github_link2"  // If multiple code-links exist
-    ]
-}
+[
+    {
+        "file": "src/implementation1.py",
+        "line": 3,
+        "tag":"# req-Id:",
+        "need": "TREQ_ID_1",
+        "full_line": "# req-Id: TREQ_ID_1"
+    },
+    {
+        "file": "src/implementation2.py", 
+        "line": 3,
+        "tag":"# req-Id:",
+        "need": "TREQ_ID_1",
+        "full_line": "# req-Id: TREQ_ID_1"
+    },
+]
 ```
 
 <br>

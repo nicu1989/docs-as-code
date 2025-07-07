@@ -43,7 +43,12 @@ def find_git_root(start_path: str | Path = "") -> Path | None:
     while not (git_root / ".git").exists():
         git_root = git_root.parent
         if git_root == Path("/"):
-            return None
+            # fallback to cwd when building with python -m sphinx docs _build -T
+            git_root = Path.cwd().resolve()
+            while not (git_root / ".git").exists():
+                git_root = git_root.parent
+                if git_root == Path("/"):
+                    return None
     return git_root
 
 

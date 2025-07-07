@@ -1,3 +1,15 @@
+# *******************************************************************************
+# Copyright (c) 2025 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -14,7 +26,8 @@ class NeedLink:
     need: str
     full_line: str
 
-def DefaultNeedLink()-> NeedLink:
+
+def DefaultNeedLink() -> NeedLink:
     """
     Return a default NeedLinks to be used as 'default args' or so
     Like this better than adding defaults to the dataclass, as it is deliberate
@@ -27,6 +40,7 @@ def DefaultNeedLink()-> NeedLink:
         full_line="",
     )
 
+
 class NeedLinkEncoder(json.JSONEncoder):
     def default(self, o: object):
         if isinstance(o, NeedLink):
@@ -34,6 +48,7 @@ class NeedLinkEncoder(json.JSONEncoder):
         if isinstance(o, Path):
             return str(o)
         return super().default(o)
+
 
 def needlink_decoder(d: dict[str, Any]) -> NeedLink | dict[str, Any]:
     if {"file", "line", "tag", "need", "full_line"} <= d.keys():

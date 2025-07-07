@@ -80,7 +80,7 @@ def create_demo_files(sphinx_base_dir, git_repo_setup):
     (docs_dir / "index.rst").write_text(basic_needs())
     (docs_dir / "conf.py").write_text(basic_conf())
     curr_dir = Path(__file__).absolute().parent
-    #print("CURR_dir", curr_dir)
+    # print("CURR_dir", curr_dir)
     shutil.copyfile(curr_dir / "scl_golden_file.json", repo_path / ".golden_file.json")
 
     # Add files to git and commit
@@ -137,11 +137,13 @@ def construct_gh_url() -> str:
 
 
 @pytest.fixture()
-def sphinx_app_setup(sphinx_base_dir, create_demo_files, git_repo_setup) -> Callable[[], SphinxTestApp]:
+def sphinx_app_setup(
+    sphinx_base_dir, create_demo_files, git_repo_setup
+) -> Callable[[], SphinxTestApp]:
     def _create_app():
         base_dir = sphinx_base_dir
         docs_dir = base_dir / "docs"
-        
+
         # CRITICAL: Change to a directory that exists and is accessible
         # This fixes the "no such file or directory" error in Bazel
         original_cwd = None
@@ -150,7 +152,7 @@ def sphinx_app_setup(sphinx_base_dir, create_demo_files, git_repo_setup) -> Call
         except FileNotFoundError:
             # Current working directory doesn't exist, which is the problem
             pass
-        
+
         # Change to the base_dir before creating SphinxTestApp
         os.chdir(base_dir)
         try:
@@ -161,7 +163,7 @@ def sphinx_app_setup(sphinx_base_dir, create_demo_files, git_repo_setup) -> Call
                 outdir=sphinx_base_dir / "out",
                 buildername="html",
                 warningiserror=True,
-            )        
+            )
         finally:
             # Try to restore original directory, but don't fail if it doesn't exist
             if original_cwd is not None:
@@ -170,7 +172,6 @@ def sphinx_app_setup(sphinx_base_dir, create_demo_files, git_repo_setup) -> Call
                 except (FileNotFoundError, OSError):
                     # Original directory might not exist anymore in Bazel sandbox
                     pass
-    
 
     return _create_app
 

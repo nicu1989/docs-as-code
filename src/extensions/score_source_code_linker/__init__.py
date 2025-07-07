@@ -37,7 +37,7 @@ from src.extensions.score_source_code_linker.generate_source_code_links_json imp
 from src.extensions.score_source_code_linker.needlinks import (
     NeedLink,
     load_source_code_links_json,
-    DefaultNeedLink
+    DefaultNeedLink,
 )
 
 LOGGER = get_logger(__name__)
@@ -178,7 +178,7 @@ def get_github_repo_info(git_root_cwd: Path) -> str:
     return repo
 
 
-def get_git_root(git_root: Path=Path() )-> Path:
+def get_git_root(git_root: Path = Path()) -> Path:
     # This is kinda ugly, doing this to reduce type errors.
     # There might be a nicer way to do this
     if git_root == Path():
@@ -190,14 +190,19 @@ def get_git_root(git_root: Path=Path() )-> Path:
     return passed_git_root
 
 
-def get_github_base_url(git_root: Path = Path() ) -> str:
+def get_github_base_url(git_root: Path = Path()) -> str:
     passed_git_root = get_git_root(git_root)
     repo_info = get_github_repo_info(passed_git_root)
     return f"https://github.com/{repo_info}"
 
-def get_github_link(git_root: Path = Path(), needlink: NeedLink = DefaultNeedLink()) -> str:
+
+def get_github_link(
+    git_root: Path = Path(), needlink: NeedLink = DefaultNeedLink()
+) -> str:
     passed_git_root = get_git_root(git_root)
-    base_url = get_github_base_url(passed_git_root)  # Pass git_root to avoid double lookup
+    base_url = get_github_base_url(
+        passed_git_root
+    )  # Pass git_root to avoid double lookup
     current_hash = get_current_git_hash(passed_git_root)
     return f"{base_url}/blob/{current_hash}/{needlink.file}#L{needlink.line}"
 

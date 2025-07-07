@@ -1,3 +1,15 @@
+# *******************************************************************************
+# Copyright (c) 2025 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************
 import json
 import os
 import subprocess
@@ -42,12 +54,14 @@ from src.extensions.score_source_code_linker.needlinks import (
 
 """
 
+
 def encode_comment(s: str) -> str:
     return s.replace(" ", "-----", 1)
 
 
 def decode_comment(s: str) -> str:
     return s.replace("-----", " ", 1)
+
 
 class NeedLinkTestEncoder(json.JSONEncoder):
     def default(self, o: object):
@@ -394,7 +408,7 @@ def test_get_github_repo_info_multiple_remotes(git_repo_multiple_remotes):
 
 def test_get_current_git_hash(git_repo):
     """Test getting current git hash."""
-    print('==== GIt REPO====')
+    print("==== GIt REPO====")
     a = git_repo
     print(a)
     result = get_current_git_hash(git_repo)
@@ -611,7 +625,6 @@ def another_function():
 
     os.chdir(Path(git_repo).absolute())
     for needlink in loaded_links:
-
         github_link = get_github_link(git_repo, needlink)
         assert "https://github.com/test-user/test-repo/blob/" in github_link
         assert f"src/{needlink.file.name}#L{needlink.line}" in github_link

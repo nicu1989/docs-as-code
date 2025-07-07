@@ -38,12 +38,17 @@ def find_git_root(start_path: str | Path = "") -> Path | None:
     """Find the git root directory starting from the given path or __file__."""
     if start_path == "":
         start_path = __file__
-
+    print(f"DEBUG: start_path: {start_path}")
+    print(f"DEBUG: cwd: {Path.cwd()}")
     git_root = Path(start_path).resolve()
     while not (git_root / ".git").exists():
         git_root = git_root.parent
         if git_root == Path("/"):
-            return None
+            git_root = Path.cwd().resolve()
+            while not (git_root / ".git").exists():
+                git_root = git_root.parent
+                if git_root == Path("/"):
+                    return None
     return git_root
 
 

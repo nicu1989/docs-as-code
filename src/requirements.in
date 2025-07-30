@@ -14,6 +14,7 @@ ruamel.yaml
 myst-parser
 PyGithub
 sphinx-needs[plotting]
+sphinx_rust @ https://github.com/nicu1989/sphinx-rust/releases/download/v0.0.2-dev8/sphinx_rust-0.0.2.dev8-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 # Until release of esbonio 1.x, we need to install it ourselves so the VS Code esbonio-extension
 # can find it.
 # esbonio >= 1 comes bundled with the esbonio-extension >= 1.

@@ -29,7 +29,7 @@ on:
 
 jobs:
   docs-pipeline:
-    uses: nicu1989/cicd-workflows/.github/workflows/docs.yml@main
+    uses: nicu1989/cicd-workflows/.github/workflows/docs2.yml@main
     permissions:
       contents: write
       pages: write

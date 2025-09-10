@@ -14,7 +14,7 @@
 Docs-As-Code
 =====================
 
-Welcse to the docs-as-code documentation, it is organized into several key sections.
+Wecse to the docs-as-code documentation, it is organized into several key sections.
 
 
 .. grid:: 1 1 3 3

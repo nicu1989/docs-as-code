@@ -43,4 +43,3 @@ jobs:
       bazel-docs-verify-target: "//:docs_check"
       bazel-tests-target: "//..."
       retention-days: 3
-      deployment_type: "workflow"

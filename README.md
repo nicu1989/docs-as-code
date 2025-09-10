@@ -1,5 +1,5 @@
 # docs-as-codes
-
+d
 Docs-as-code tooling for Eclipse S-CORE
 
 Full documentation is on [GitHub Pages](https://eclipse-score.github.io/docs-as-code/).

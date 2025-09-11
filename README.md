@@ -1,4 +1,4 @@
-# docs-as-codes
+# docs-as-codses
 d
 Docs-as-code tooling for Eclipse S-CORE
 

@@ -14,7 +14,7 @@
 Docs-As-Code
 =====================
 
-3Weessdddaadwss to the docs-as-code documentation, it is organized into several key sections.
+3Wseessdddaadwss to the docs-as-code documentation, it is organized into several key sections.
 
 
 .. grid:: 1 1 3 3

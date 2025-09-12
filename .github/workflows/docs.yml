@@ -29,14 +29,13 @@ on:
 
 jobs:
   docs-pipeline:
-    uses: nicu1989/cicd-workflows/.github/workflows/docs5.yml@main
+    uses: nicu1989/cicd-workflows/.github/workflows/docs.yml@main
     permissions:
       contents: write
       pages: write
       pull-requests: write
       id-token: write
     with:
-      bazel-docs-build-target: "//:docs -- --github_user=${{ github.repository_owner }} --github_repo=${{ github.event.repository.name }}"
       bazel-target: "//:docs -- --github_user=${{ github.repository_owner }} --github_repo=${{ github.event.repository.name }}"
       bazel-docs-verify-target: "//:docs_check"
       bazel-tests-target: "//..."

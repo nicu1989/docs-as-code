@@ -36,10 +36,8 @@ jobs:
       pull-requests: write
       id-token: write
     with:
-      # Keep your runtime args for final HTML build here:
       bazel-docs-build-target: "//:docs -- --github_user=${{ github.repository_owner }} --github_repo=${{ github.event.repository.name }}"
       bazel-target: "//:docs -- --github_user=${{ github.repository_owner }} --github_repo=${{ github.event.repository.name }}"
-      # You can override these if your repo uses different targets
       bazel-docs-verify-target: "//:docs_check"
       bazel-tests-target: "//..."
       retention-days: 3

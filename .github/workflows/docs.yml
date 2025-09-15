@@ -30,7 +30,7 @@ on:
 
 jobs:
   build-docs:
-    uses: eclipse-score/cicd-workflows/.github/workflows/docs.yml@main
+    uses: nicu1989/cicd-workflows/.github/workflows/docs.yml@main
     permissions:
       contents: write
       pages: write
@@ -39,4 +39,6 @@ jobs:
 
     with:
       bazel-target: "//:docs -- --github_user=${{ github.repository_owner }} --github_repo=${{ github.event.repository.name }}"
+      bazel-tests-target: "//..."
+      bazel-docs-verify-target: "//:docs_check"
       retention-days: 3

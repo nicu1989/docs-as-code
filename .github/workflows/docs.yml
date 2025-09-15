@@ -39,4 +39,6 @@ jobs:
 
     with:
       bazel-target: "//:docs -- --github_user=${{ github.repository_owner }} --github_repo=${{ github.event.repository.name }}"
+      bazel-docs-verify-target: "//:docs_check"
+      bazel-tests-target: "//..."
       retention-days: 3

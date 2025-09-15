@@ -11,7 +11,7 @@
     # SPDX-License-Identifier: Apache-2.0
     # *******************************************************************************
 
-Docs-As-Code Test1
+Docs-As-Code Test2
 =====================
 
 Welcome to the docs-as-code documentation, it is organized into several key sections.

@@ -12,11 +12,9 @@
 # *******************************************************************************
 
 name: Consumer Tests
+
 on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-  merge_group:
-    types: [checks_requested]
+  workflow_call:
 
 jobs:
   test:

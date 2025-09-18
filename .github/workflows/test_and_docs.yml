@@ -46,7 +46,7 @@ jobs:
     # Waits for consumer-tests but run only when docs verification succeeded
     needs: [docs-verify, consumer-tests]
     if: ${{ always() && needs.docs-verify.result == 'success' }}
-    uses: nicu1989/cicd-workflows/.github/workflows/docs-build.yml@main
+    uses: nicu1989/cicd-workflows/.github/workflows/docs.yml@main
     permissions:
       contents: write
       pages: write

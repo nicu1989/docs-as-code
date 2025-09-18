@@ -38,7 +38,7 @@ jobs:
 
       - name: Run Consumer tests
         run: |
-          .venv_docs/bin/python -m pytest -s -v src/tests/ --repo="$CONSUMER" --junitxml="reports/${{ matrix.consumer }}.xml"
+          .venv_docs/bin/python -m pytest -s -v src/tests/ --repo="$CONSUMER" --junitxml="reports/${{ matrix.consumer }}.xml" | tee "reports/${{ matrix.consumer }}.log"
 
         env:
           FORCE_COLOR: "1"

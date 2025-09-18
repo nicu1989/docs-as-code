@@ -52,7 +52,6 @@ jobs:
         with:
           name: tests-${{ matrix.consumer }}
           path: reports/
-          if-no-files-found: warn
 
   summarize:
     needs: test

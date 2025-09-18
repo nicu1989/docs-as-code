@@ -2,40 +2,7 @@
   {
     "name": "test_unknown_directive",
     "file": "src/extensions/score_metamodel/tests/test_check_options.py",
-    "line": "74",
-    "result": "passed",
-    "TestType": "requirements-based",
-    "DerivationTechnique": "requirements-analysis",
-    "result_text": "",
-    "PartiallyVerifies": "tool_req__docs_metamodel",
-    "FullyVerifies": null
-  },
-  {
-    "name": "test_unknown_directive_extra_option",
-    "file": "src/extensions/score_metamodel/tests/test_check_options.py",
-    "line": "101",
-    "result": "passed",
-    "TestType": "requirements-based",
-    "DerivationTechnique": "requirements-analysis",
-    "result_text": "",
-    "PartiallyVerifies": "tool_req__docs_metamodel",
-    "FullyVerifies": null
-  },
-  {
-    "name": "test_missing_mandatory_options_info",
-    "file": "src/extensions/score_metamodel/tests/test_check_options.py",
-    "line": "128",
-    "result": "passed",
-    "TestType": "requirements-based",
-    "DerivationTechnique": "requirements-analysis",
-    "result_text": "",
-    "PartiallyVerifies": "tool_req__docs_metamodel",
-    "FullyVerifies": null
-  },
-  {
-    "name": "test_invalid_option_type",
-    "file": "src/extensions/score_metamodel/tests/test_check_options.py",
-    "line": "159",
+    "line": "64",
     "result": "passed",
     "TestType": "requirements-based",
     "DerivationTechnique": "requirements-analysis",
@@ -46,18 +13,7 @@
   {
     "name": "test_unknown_option_present_in_neither_req_opt_neither_opt_opt",
     "file": "src/extensions/score_metamodel/tests/test_check_options.py",
-    "line": "190",
-    "result": "passed",
-    "TestType": "requirements-based",
-    "DerivationTechnique": "requirements-analysis",
-    "result_text": "",
-    "PartiallyVerifies": "tool_req__docs_metamodel",
-    "FullyVerifies": null
-  },
-  {
-    "name": "test_invalid_option_value_type_raises_value_error",
-    "file": "src/extensions/score_metamodel/tests/test_check_options.py",
-    "line": "224",
+    "line": "88",
     "result": "passed",
     "TestType": "requirements-based",
     "DerivationTechnique": "requirements-analysis",

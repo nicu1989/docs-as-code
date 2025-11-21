@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Capabilities - A High Level Overview &#8212; Score Docs-as-Code  documentation</title>
+    <title>Bazel macro: docs &#8212; Score Docs-as-Code  documentation</title>
   
   
   
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=92936fa5" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=92936fa5" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
   
   <!-- So that users can add custom icons -->
@@ -62,7 +62,7 @@
     <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
     <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
     <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'requirements/capabilities';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/bazel_macros';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nicu1989.github.io/docs-as-code/versions.json';
@@ -72,8 +72,8 @@
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Process Requirements Overview" href="process_overview.html" />
-    <link rel="prev" title="Requirements" href="index.html" />
+    <link rel="next" title="Concepts" href="../concepts/index.html" />
+    <link rel="prev" title="Commands" href="commands.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -159,16 +159,23 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../internals/index.html">
-    Internals
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Reference
   </a>
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="index.html">
-    Requirements
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../concepts/index.html">
+    Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../internals/index.html">
+    Internals
   </a>
 </li>
 
@@ -288,16 +295,23 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../internals/index.html">
-    Internals
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Reference
   </a>
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="index.html">
-    Requirements
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../concepts/index.html">
+    Concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../internals/index.html">
+    Internals
   </a>
 </li>
 
@@ -365,10 +379,8 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Capabilities - A High Level Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="process_overview.html">Process Requirements Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Tool Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test_overview.html">Testing Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Bazel macro: <code class="docutils literal notranslate"><span class="pre">docs</span></code></a></li>
 </ul>
 </div>
 </nav></div>
@@ -410,9 +422,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Requirements</a></li>
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Reference</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Capabilities - A High Level Overview</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Bazel macro: <code class="docutils literal notranslate"><span class="pre">docs</span></code></span></li>
   </ul>
 </nav>
 </div>
@@ -429,95 +441,52 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="capabilities-a-high-level-overview">
-<span id="capabilities"></span><h1>Capabilities - A High Level Overview<a class="headerlink" href="#capabilities-a-high-level-overview" title="Link to this heading">#</a></h1>
-<p>This document outlines the key capabilities of the S-CORE docs-as-code tooling.
-Core capabilities of <a class="reference external" href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="reference external" href="https://sphinx-needs.readthedocs.io/">sphinx-needs</a> are assumed and extended with S-CORE-specific conventions and infrastructure.</p>
-<section id="input-format">
-<h2>Input Format<a class="headerlink" href="#input-format" title="Link to this heading">#</a></h2>
+  <section id="bazel-macro-docs">
+<span id="bazel-macros"></span><h1>Bazel macro: <code class="docutils literal notranslate"><span class="pre">docs</span></code><a class="headerlink" href="#bazel-macro-docs" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">docs</span></code> macro defined in <code class="docutils literal notranslate"><span class="pre">docs.bzl</span></code> is a convenience wrapper
+that creates a small set of Bazel targets
+to build, verify and preview the project’s Sphinx documentation,
+and to create a Python virtual environment for IDE support (Esbonio).</p>
+<p>See <a class="reference internal" href="commands.html"><span class="doc">commands</span></a> for the targets/commands it creates.</p>
+<p>The macro must be called from the repository root package.</p>
+<section id="minimal-example-root-build">
+<h2>Minimal example (root <code class="docutils literal notranslate"><span class="pre">BUILD</span></code>)<a class="headerlink" href="#minimal-example-root-build" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;//:docs.bzl&quot;</span><span class="p">,</span> <span class="s2">&quot;docs&quot;</span><span class="p">)</span>
+
+<span class="n">docs</span><span class="p">(</span>
+    <span class="n">source_dir</span> <span class="o">=</span> <span class="s2">&quot;docs&quot;</span><span class="p">,</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="c1"># labels to any extra tools or data you want included</span>
+        <span class="c1"># e.g. &quot;//:needs_json&quot; or other tool targets</span>
+    <span class="p">],</span>
+    <span class="n">deps</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="c1"># additional bazel labels providing Python deps or other runfiles</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <ul class="simple">
-<li><p>Supports both reStructuredText (rst) and Markdown (CommonMark/GFM)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source_dir</span></code> (string, default: <code class="docutils literal notranslate"><span class="pre">&quot;docs&quot;</span></code>)
+Path (relative to repository root) to your Sphinx source directory. This is the folder
+that contains your <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> and the top-level ReST/markdown sources.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> (list of bazel labels)
+Extra runfiles / data targets that should be made available to the documentation targets.
+Typical entries are targets that generate or provide external data used by the docs, for
+example a <code class="docutils literal notranslate"><span class="pre">:needs_json</span></code> producer. The items in <code class="docutils literal notranslate"><span class="pre">data</span></code> are added to the py_binaries and
+to the Sphinx tooling so they are available at build time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">deps</span></code> (list of bazel labels)
+Additional Bazel dependencies to add to the Python binaries and the virtual environment
+target. Use this to add project-specific Python packages or extension libraries the docs
+build requires.</p></li>
 </ul>
 </section>
-<section id="build">
-<h2>Build<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
+<section id="edge-cases">
+<h2>Edge cases<a class="headerlink" href="#edge-cases" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Ensures deterministic output: identical input produces identical output</p></li>
-<li><p>✅ Uses version-controlled configuration to ensure reproducibility</p></li>
-<li><p>✅ Behaves consistently across different repositories and environments (e.g., local, CI/CD)</p></li>
-<li><p>✅ Supports incremental builds to provide fast feedback during authoring</p></li>
-<li><p>✅ Seamless integration with the Bazel build system</p></li>
-</ul>
-</section>
-<section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>✅ Uses a single, shared, version-controlled configuration file</p></li>
-<li><p>✅ Allows repository-specific overrides when needed</p></li>
-<li><p>✅ Supports easy configuration of the metamodel (e.g., used roles, types)</p></li>
-<li><p>✅ Ensures consistency with process and quality requirements</p></li>
-</ul>
-</section>
-<section id="cross-repository-linking">
-<h2>Cross-Repository Linking<a class="headerlink" href="#cross-repository-linking" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>✅ Supports unidirectional links to:</p>
-<ul>
-<li><p>Versioned documentation (for tagged releases)</p></li>
-<li><p>Latest documentation (e.g. <code class="docutils literal notranslate"><span class="pre">main</span></code> branch)</p></li>
-</ul>
-</li>
-<li><p>✅ Keeps linked repositories and their rendered websites unaffected by incoming references</p></li>
-<li><p>Allows bidirectional links for integration-focused documentation</p></li>
-<li><p>In addition to high level versioning of repositories, supports verifying suspect links on a requirement level</p></li>
-</ul>
-</section>
-<section id="previews-feedback">
-<h2>Previews &amp; Feedback<a class="headerlink" href="#previews-feedback" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>✅ Automatically generates documentation previews for pull requests</p></li>
-<li><p>Previews are available within minutes of each push</p></li>
-<li><p>✅ Preview output matches final published artifacts (identical rendering)</p></li>
-</ul>
-</section>
-<section id="ide-developer-experience">
-<h2>IDE &amp; Developer Experience<a class="headerlink" href="#ide-developer-experience" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>✅ Live preview functionality for documentation authors</p></li>
-<li><p>✅ Integrated linting for:</p>
-<ul>
-<li><p>Syntax and formatting (reST and Markdown)</p></li>
-<li><p>Internal and external link validity</p></li>
-<li><p>✅ Metamodel compliance</p></li>
-</ul>
-</li>
-<li><p>Auto-completion support for:</p>
-<ul>
-<li><p>Cross-repository links</p></li>
-<li><p>Sphinx directives and roles (planned)</p></li>
-</ul>
-</li>
-</ul>
-</section>
-<section id="architecture-visualization">
-<h2>Architecture Visualization<a class="headerlink" href="#architecture-visualization" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>✅ Generates architecture diagrams from structured models</p></li>
-<li><p>Integrates diagram tools such as PlantUML and Mermaid</p></li>
-</ul>
-</section>
-<section id="code-integration">
-<h2>Code Integration<a class="headerlink" href="#code-integration" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>✅ Enables traceability between documentation and source code by linking from implementation to requirements</p></li>
-</ul>
-</section>
-<section id="bazel-support">
-<h2>⚙️ Bazel Support<a class="headerlink" href="#bazel-support" title="Link to this heading">#</a></h2>
-<p><em>Used as the core build system across S-CORE</em></p>
-<ul class="simple">
-<li><p>✅ Automatically validates changes to the S-CORE Bazel registry</p></li>
-<li><p>✅ IDE support for editing Bazel <code class="docutils literal notranslate"><span class="pre">BUILD</span></code> and <code class="docutils literal notranslate"><span class="pre">.bzl</span></code> files (via LSP, plugins)</p></li>
+<li><p>If your Sphinx <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> expects files generated by other Bazel targets, make sure those
+targets are included in the <code class="docutils literal notranslate"><span class="pre">data</span></code> list so they are available to the build driver.</p></li>
+<li><p>The experimental “combo” targets rewrite some <code class="docutils literal notranslate"><span class="pre">data</span></code> labels for combined builds; those
+are intended for advanced use and are optional for normal doc workflows.</p></li>
 </ul>
 </section>
 </section>
@@ -533,20 +502,20 @@ Core capabilities of <a class="reference external" href="https://www.sphinx-doc.
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="commands.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Requirements</p>
+        <p class="prev-next-title">Commands</p>
       </div>
     </a>
     <a class="right-next"
-       href="process_overview.html"
+       href="../concepts/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Process Requirements Overview</p>
+        <p class="prev-next-title">Concepts</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -569,15 +538,8 @@ Core capabilities of <a class="reference external" href="https://www.sphinx-doc.
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-format">Input Format</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build">Build</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-repository-linking">Cross-Repository Linking</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#previews-feedback">Previews &amp; Feedback</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ide-developer-experience">IDE &amp; Developer Experience</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-visualization">Architecture Visualization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-integration">Code Integration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bazel-support">⚙️ Bazel Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-example-root-build">Minimal example (root <code class="docutils literal notranslate"><span class="pre">BUILD</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#edge-cases">Edge cases</a></li>
 </ul>
   </nav></div>
 
@@ -585,7 +547,7 @@ Core capabilities of <a class="reference external" href="https://www.sphinx-doc.
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/nicu1989/docs-as-code/edit/main/docs/requirements/capabilities.md">
+    <a href="https://github.com/nicu1989/docs-as-code/edit/main/docs/reference/bazel_macros.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -601,7 +563,7 @@ Core capabilities of <a class="reference external" href="https://www.sphinx-doc.
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/requirements/capabilities.md.txt"
+      <li><a href="../_sources/reference/bazel_macros.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

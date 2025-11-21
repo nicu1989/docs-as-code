@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Guide to Creating a Sphinx Extension &#8212; Score Docs-as-Code  documentation</title>
+    <title>Capabilities - A High Level Overview &#8212; Score Docs-as-Code  documentation</title>
   
   
   
@@ -62,7 +62,7 @@
     <script src="../../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
     <script src="../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
     <script src="../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'internals/extensions/extension_guide';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'internals/requirements/capabilities';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nicu1989.github.io/docs-as-code/versions.json';
@@ -72,8 +72,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ubproject.toml sync" href="sync_toml.html" />
-    <link rel="prev" title="Score Source Code Linker" href="source_code_linker.html" />
+    <link rel="next" title="Process Requirements Overview" href="process_overview.html" />
+    <link rel="prev" title="Requirements" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -379,18 +379,16 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Extensions</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="metamodel.html">Metamodel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rst_filebased_testing.html">Filebased Testing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="header_service.html">Header Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source_code_linker.html">Source Code Linker</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Extension Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sync_toml.html">Sync TOML</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../extensions/index.html">Extensions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmark_results.html">Bazel Mini Benchmark Results</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../decisions/index.html">Decisions And Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../requirements/index.html">Requirements</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Requirements</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Capabilities - A High Level Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview.html">Process Requirements Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requirements.html">Tool Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_overview.html">Testing Statistics</a></li>
+</ul>
+</details></li>
 </ul>
 </div>
 </nav></div>
@@ -435,9 +433,9 @@
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Internals</a></li>
     
     
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Extensions</a></li>
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Requirements</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Guide to Creating a Sphinx Extension</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Capabilities - A High Level Overview</span></li>
   </ul>
 </nav>
 </div>
@@ -454,136 +452,95 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="guide-to-creating-a-sphinx-extension">
-<span id="extension-guide"></span><h1>Guide to Creating a Sphinx Extension<a class="headerlink" href="#guide-to-creating-a-sphinx-extension" title="Link to this heading">#</a></h1>
-<p>This document will help you with the most important building blocks and provide all information needed to start writing your own Sphinx extension in the S-CORE project.
-<strong>It is intended for developers, it will not show how to use extensions.</strong></p>
-<section id="getting-started">
-<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p>Create a new folder in <code class="docutils literal notranslate"><span class="pre">docs/_tooling/extensions</span></code> called <code class="docutils literal notranslate"><span class="pre">score_&lt;name</span> <span class="pre">of</span> <span class="pre">your</span> <span class="pre">extension&gt;</span></code></p></li>
-<li><p>Copy the template inside the <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code></p></li>
-<li><p>Adapt to your needs</p></li>
-</ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sphinx.application</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphinx</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="c1"># attach to events, add config parameters, call functions etc.</span>
-    <span class="o">...</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.1&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;parallel_read_safe&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># or False</span>
-        <span class="s2">&quot;parallel_write_safe&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># or False</span>
-    <span class="p">}</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">setup</span></code> function is vital as this is the one that Sphinx will call when loading your extension.
-From here you can attach to different events emitted by Sphinx or sphinx-needs, emit events yourself,
-or implement the logic needed for your extension to work.</p>
-</section>
-<section id="attaching-to-an-event">
-<h2>Attaching to an Event<a class="headerlink" href="#attaching-to-an-event" title="Link to this heading">#</a></h2>
-<p>Your extension might want to attach certain functions to events that Sphinx emits. This can be done like so:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;&lt;event&gt;&quot;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">function_to_execute</span><span class="o">&gt;</span><span class="p">)</span>
-    <span class="o">...</span>
-</pre></div>
-</div>
-<p>It’s important to ensure that the function you are attaching to the event accepts the correct number of arguments in the right order.
-Depending on the event you attach to, some information might not be available, or might be locked.
-Some events also expect a return value.</p>
-<p>For more information, please see the related documentation:</p>
+  <section id="capabilities-a-high-level-overview">
+<span id="capabilities"></span><h1>Capabilities - A High Level Overview<a class="headerlink" href="#capabilities-a-high-level-overview" title="Link to this heading">#</a></h1>
+<p>This document outlines the key capabilities of the S-CORE docs-as-code tooling.
+Core capabilities of <a class="reference external" href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="reference external" href="https://sphinx-needs.readthedocs.io/">sphinx-needs</a> are assumed and extended with S-CORE-specific conventions and infrastructure.</p>
+<section id="input-format">
+<h2>Input Format<a class="headerlink" href="#input-format" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/extdev/appapi.html#sphinx.application.Sphinx.connect">Attaching function signature</a></p></li>
-<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/extdev/event_callbacks.html#core-events-overview">Build API events</a></p></li>
-<li><p><a class="reference external" href="https://github.com/useblocks/sphinx-needs/blob/master/docs/contributing.rst#structure-of-the-extensions-logic">sphinx-needs events</a></p></li>
+<li><p>Supports both reStructuredText (rst) and Markdown (CommonMark/GFM)</p></li>
 </ul>
 </section>
-<section id="adding-a-new-configuration-value">
-<h2>Adding a New Configuration Value<a class="headerlink" href="#adding-a-new-configuration-value" title="Link to this heading">#</a></h2>
-<p>Adding new configuration values can be useful. This can be achieved with:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">setup</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">Sphinx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">add_config_value</span><span class="p">(</span><span class="s2">&quot;&lt;config-name&gt;&quot;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">default</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">rebuild</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">types</span><span class="o">&gt;</span><span class="p">)</span>
-    <span class="o">...</span>
-</pre></div>
-</div>
-<p>Each configuration value has an associated ‘rebuild’ value that determines what needs to be rebuilt if this value is changed.
-It must be one of these values:</p>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">'env'</span></code>: if a change in the setting only takes effect when a document is parsed - this means that the whole environment must be rebuilt.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">'html'</span></code>: if a change in the setting needs a full rebuild of HTML documents.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">''</span></code>: if a change in the setting will not need any special rebuild.</p></li>
-</ul>
-<p>More information is available in the <a class="reference external" href="https://www.sphinx-doc.org/en/master/extdev/appapi.html#sphinx.application.Sphinx.add_config_value">documentation here</a>.</p>
-</section>
-<section id="adding-your-extension-to-sphinx">
-<h2>Adding Your Extension to Sphinx<a class="headerlink" href="#adding-your-extension-to-sphinx" title="Link to this heading">#</a></h2>
-<p>Adding your extension to Sphinx is straightforward. Since all Python files are already ‘discovered’, you just need to add the extension inside <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> to the extensions list:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># conf.py</span>
-<span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="c1">#...</span>
-        <span class="s2">&quot;score_&lt;name of your extension&gt;&quot;</span><span class="p">,</span>
-<span class="p">]</span>
-</pre></div>
-</div>
-<blockquote>
-<div><p><strong>Important:</strong> There cannot be any BUILD file inside the entire ‘extensions’ folder, as that would break the Python imports.</p>
-</div></blockquote>
-</section>
-<section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
-<p>As we want to ensure code quality, testing is an integral part of the development process.
-We perform testing with unit tests as well as integration tests that validate the full extension.</p>
-<blockquote>
-<div><p>Tests should cover both the happy path and edge cases.</p>
-</div></blockquote>
-<section id="where-to-place-your-test-code">
-<h3>Where to Place Your Test Code<a class="headerlink" href="#where-to-place-your-test-code" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>_tooling/
-├──<span class="w"> </span>extensions/
-│<span class="w">   </span>├──<span class="w"> </span>README.md
-│<span class="w">   </span>├──<span class="w"> </span>score_draw_uml_funcs/
-│<span class="w">   </span>├──<span class="w"> </span>YOUR_EXTENSION/
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py<span class="w">  </span><span class="c1"># your python code (setup needs to be in here)</span>
-│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>xyz.py<span class="w">       </span><span class="c1"># your python code (if you need/want to split it across different files)</span>
-│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>tests/
-│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>test_xyz.py<span class="w">             </span><span class="c1"># unit tests</span>
-│<span class="w">   </span>│<span class="w">       </span>└──<span class="w"> </span>test_YOUR_EXTENSION.py<span class="w">  </span><span class="c1"># integration tests</span>
-├──<span class="w"> </span>score_metamodel/
-├──<span class="w"> </span>score_plantuml.py
-</pre></div>
-</div>
-</section>
-<section id="integration-tests">
-<h3>Integration Tests<a class="headerlink" href="#integration-tests" title="Link to this heading">#</a></h3>
-<p>To enable integration tests, we make use of the Sphinx test app fixture provided in pytest by Sphinx itself.</p>
-<section id="what-do-you-need">
-<h4>What Do You Need?<a class="headerlink" href="#what-do-you-need" title="Link to this heading">#</a></h4>
-<p>To create a Sphinx testing app, you need the same components as a normal Sphinx app:</p>
-<ul class="simple">
-<li><p>RST file to build</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">conf.py</span></code> file</p></li>
-<li><p>Source, conf, and build directories
-In addition, you can provide anything else that you might need to test your specific extension.</p></li>
-</ul>
-<p>For examples on how to use and implement the sphinx testing app, you can check out the <a class="reference external" href="https://github.com/eclipse-score/docs-as-code/tree/main/src/extensions/score_source_code_linker/">source code linker</a></p>
-<p>Find everything related to testing within Bazel and how to add your test suite to it, <a class="reference external" href="https://github.com/eclipse-score/tooling/blob/main/python_basics/score_pytest/README.md">see here</a></p>
-<p>Also look at already built extensions inside S-CORE. They can be found in their respective folders:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/eclipse-score/docs-as-code/tree/main/src/extensions/score_metamodel">score_metamodel</a></p></li>
-<li><p><a class="reference external" href="https://github.com/eclipse-score/docs-as-code/tree/main/src/extensions/score_draw_uml_funcs">score_draw_uml_funcs</a></p></li>
+<li><p>Ensures deterministic output: identical input produces identical output</p></li>
+<li><p>✅ Uses version-controlled configuration to ensure reproducibility</p></li>
+<li><p>✅ Behaves consistently across different repositories and environments (e.g., local, CI/CD)</p></li>
+<li><p>✅ Supports incremental builds to provide fast feedback during authoring</p></li>
+<li><p>✅ Seamless integration with the Bazel build system</p></li>
 </ul>
 </section>
-</section>
-</section>
-<section id="further-resources">
-<h2>Further Resources<a class="headerlink" href="#further-resources" title="Link to this heading">#</a></h2>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.sphinx-doc.org/en">Sphinx Documentation</a></p></li>
-<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/extdev/testing.html#module-sphinx.testing">Sphinx Testing Fixture</a></p></li>
-<li><p><a class="reference external" href="https://sphinx-needs.readthedocs.io/en/latest/">Sphinx Needs Documentation</a></p></li>
-<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/development/tutorials/index.html">Sphinx Tutorials</a></p></li>
-<li><p><a class="reference external" href="https://docs.pytest.org/en/stable/">Pytest Documentation</a></p></li>
+<li><p>✅ Uses a single, shared, version-controlled configuration file</p></li>
+<li><p>✅ Allows repository-specific overrides when needed</p></li>
+<li><p>✅ Supports easy configuration of the metamodel (e.g., used roles, types)</p></li>
+<li><p>✅ Ensures consistency with process and quality requirements</p></li>
+</ul>
+</section>
+<section id="cross-repository-linking">
+<h2>Cross-Repository Linking<a class="headerlink" href="#cross-repository-linking" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>✅ Supports unidirectional links to:</p>
+<ul>
+<li><p>Versioned documentation (for tagged releases)</p></li>
+<li><p>Latest documentation (e.g. <code class="docutils literal notranslate"><span class="pre">main</span></code> branch)</p></li>
+</ul>
+</li>
+<li><p>✅ Keeps linked repositories and their rendered websites unaffected by incoming references</p></li>
+<li><p>Allows bidirectional links for integration-focused documentation</p></li>
+<li><p>In addition to high level versioning of repositories, supports verifying suspect links on a requirement level</p></li>
+</ul>
+</section>
+<section id="previews-feedback">
+<h2>Previews &amp; Feedback<a class="headerlink" href="#previews-feedback" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>✅ Automatically generates documentation previews for pull requests</p></li>
+<li><p>Previews are available within minutes of each push</p></li>
+<li><p>✅ Preview output matches final published artifacts (identical rendering)</p></li>
+</ul>
+</section>
+<section id="ide-developer-experience">
+<h2>IDE &amp; Developer Experience<a class="headerlink" href="#ide-developer-experience" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>✅ Live preview functionality for documentation authors</p></li>
+<li><p>✅ Integrated linting for:</p>
+<ul>
+<li><p>Syntax and formatting (reST and Markdown)</p></li>
+<li><p>Internal and external link validity</p></li>
+<li><p>✅ Metamodel compliance</p></li>
+</ul>
+</li>
+<li><p>Auto-completion support for:</p>
+<ul>
+<li><p>Cross-repository links</p></li>
+<li><p>Sphinx directives and roles (planned)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="architecture-visualization">
+<h2>Architecture Visualization<a class="headerlink" href="#architecture-visualization" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>✅ Generates architecture diagrams from structured models</p></li>
+<li><p>Integrates diagram tools such as PlantUML and Mermaid</p></li>
+</ul>
+</section>
+<section id="code-integration">
+<h2>Code Integration<a class="headerlink" href="#code-integration" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>✅ Enables traceability between documentation and source code by linking from implementation to requirements</p></li>
+</ul>
+</section>
+<section id="bazel-support">
+<h2>⚙️ Bazel Support<a class="headerlink" href="#bazel-support" title="Link to this heading">#</a></h2>
+<p><em>Used as the core build system across S-CORE</em></p>
+<ul class="simple">
+<li><p>✅ Automatically validates changes to the S-CORE Bazel registry</p></li>
+<li><p>✅ IDE support for editing Bazel <code class="docutils literal notranslate"><span class="pre">BUILD</span></code> and <code class="docutils literal notranslate"><span class="pre">.bzl</span></code> files (via LSP, plugins)</p></li>
 </ul>
 </section>
 </section>
@@ -599,20 +556,20 @@ In addition, you can provide anything else that you might need to test your spec
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="source_code_linker.html"
+       href="index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Score Source Code Linker</p>
+        <p class="prev-next-title">Requirements</p>
       </div>
     </a>
     <a class="right-next"
-       href="sync_toml.html"
+       href="process_overview.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">ubproject.toml sync</p>
+        <p class="prev-next-title">Process Requirements Overview</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -635,19 +592,15 @@ In addition, you can provide anything else that you might need to test your spec
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attaching-to-an-event">Attaching to an Event</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-new-configuration-value">Adding a New Configuration Value</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-your-extension-to-sphinx">Adding Your Extension to Sphinx</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-to-place-your-test-code">Where to Place Your Test Code</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-tests">Integration Tests</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#what-do-you-need">What Do You Need?</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-resources">Further Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-format">Input Format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build">Build</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-repository-linking">Cross-Repository Linking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#previews-feedback">Previews &amp; Feedback</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ide-developer-experience">IDE &amp; Developer Experience</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-visualization">Architecture Visualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-integration">Code Integration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bazel-support">⚙️ Bazel Support</a></li>
 </ul>
   </nav></div>
 
@@ -655,7 +608,7 @@ In addition, you can provide anything else that you might need to test your spec
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/nicu1989/docs-as-code/edit/main/docs/internals/extensions/extension_guide.md">
+    <a href="https://github.com/nicu1989/docs-as-code/edit/main/docs/internals/requirements/capabilities.md">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -671,7 +624,7 @@ In addition, you can provide anything else that you might need to test your spec
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/internals/extensions/extension_guide.md.txt"
+      <li><a href="../../_sources/internals/requirements/capabilities.md.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
